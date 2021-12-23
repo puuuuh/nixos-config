@@ -30,8 +30,6 @@ in
             ./dotfiles/tmux.nix
             ./dotfiles/neovim.nix
             ./dotfiles/waybar.nix
-            ../../services/nixos-vscode-ssh-fix.nix
-            ../../services/nixos-hm-auto-update.nix
     ];
 
     fonts.fontconfig.enable = true;
@@ -153,8 +151,6 @@ in
     };
 
     services = {
-        nixos-hm-auto-update.enable = true;
-
         lorri.enable = true;
         gpg-agent = {
             enable = true;
