@@ -6,7 +6,7 @@
 		enable = true;
 		shellAliases = {
 			ll = "ls -l";
-			update = "sudo nixos-rebuild switch";
+			update = "sudo nixos-rebuild switch --flake ~/.config/nixpkgs/#poplar";
 			uupdate = "home-manager switch --flake ~/.config/nixpkgs/#$USER -v";
 		};
 		history = {

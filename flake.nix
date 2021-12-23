@@ -12,8 +12,7 @@
     outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, overlay-emacs, home-manager, ... }:
     {
         nixosConfigurations = {
-
-            mysystem = inputs.nixpkgs.lib.nixosSystem {
+            poplar = inputs.nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./machine/configuration.nix

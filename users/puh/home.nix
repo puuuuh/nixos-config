@@ -90,6 +90,9 @@ in
                 mako # notification daemon
                 alacritty # Alacritty is the default terminal in the config
                 rofi
+                sway-contrib.grimshot
+                xdg-user-dirs
+                libnotify
                 ];
     };
 
