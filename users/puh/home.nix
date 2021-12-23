@@ -1,4 +1,4 @@
-{ config, pkgs, lib, homeDirectory, ... }:
+{ config, pkgs, lib, ... }:
 
 let 
 proximity-sort = pkgs.rustPlatform.buildRustPackage rec {
@@ -30,6 +30,7 @@ in
             ./dotfiles/tmux.nix
             ./dotfiles/neovim.nix
             ./dotfiles/waybar.nix
+        ../../services/keepass-mount.nix
     ];
 
     fonts.fontconfig.enable = true;
@@ -38,6 +39,7 @@ in
         packages = with pkgs; [
             htop
                 discord
+                keepassxc
                 tdesktop
                 noto-fonts
                 noto-fonts-cjk
@@ -159,6 +161,8 @@ in
             enable = true;
             enableSshSupport = true;
         };
+        keepass-mount = {
+            enable = true;
+        };
     };
-
 }
