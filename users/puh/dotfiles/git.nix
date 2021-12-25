@@ -8,7 +8,7 @@
       lfs.enable = true;
       userName = "Puh";
       userEmail = "puhovik@protonmail.com";
-      ignores = [ "*~" "*.swp" ];
+      ignores = [ "*~" "*.swp" ".direnv" ];
       aliases = {
         unstage = "reset HEAD --";
         pr = "pull --rebase";

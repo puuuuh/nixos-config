@@ -108,19 +108,17 @@
     users.users.puh = {
         shell = pkgs.zsh;
         isNormalUser = true;
-        extraGroups = [ "wheel" "networkmanager" "docker" ]; # Enable ‘sudo’ for the user.
+        extraGroups = [ "wheel" "networkmanager" "docker" ];
     };
 
 # List packages installed in system profile. To search, run:
 # $ nix search wget
     environment.systemPackages = with pkgs; [
-        pciutils
-            htop
+            pciutils
+	    htop
             neovim
             pavucontrol
             wget
-            firefox
-            git
     ];
 
     programs.nm-applet.enable = true;
@@ -152,6 +150,18 @@
 
 # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
         nvidiaBusId = "PCI:1:0:0";
+    };
+
+    hardware.opengl = {
+        driSupport32Bit = true;
+        driSupport = true;
+        extraPackages = with pkgs; [
+            vaapiIntel 
+            libvdpau-va-gl 
+            vaapiVdpau 
+            intel-ocl
+            intel-media-driver
+        ];
     };
 
     time.timeZone = "Europe/Kirov";
