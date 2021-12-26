@@ -1,14 +1,13 @@
 { pkgs, ... }:
 
 {
-
   programs = {
     git = {
       enable = true;
       lfs.enable = true;
       userName = "Puh";
       userEmail = "puhovik@protonmail.com";
-      ignores = [ "*~" "*.swp" ".direnv" ];
+      ignores = [ "*~" "*.swp" ".direnv" "target" ];
       aliases = {
         unstage = "reset HEAD --";
         pr = "pull --rebase";

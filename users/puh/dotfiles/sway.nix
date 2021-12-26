@@ -4,7 +4,7 @@
   home = {
     file = {
       sway_config = {
-        source = ./config.backup;
+        source = ./sway-config;
         target = ".config/sway/myconfig";
 	recursive = true;
       };
