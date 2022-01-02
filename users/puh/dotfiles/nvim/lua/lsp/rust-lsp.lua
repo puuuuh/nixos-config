@@ -47,9 +47,6 @@ require'lspconfig'.rust_analyzer.setup({
                     ["enabled"] = true
                 }
             },
-            ["experimental"] = {
-                ["procAttrMacros"] = true
-            },
             ["checkOnSave"] = {
                 ["command"] = "clippy"
             },
@@ -58,9 +55,6 @@ require'lspconfig'.rust_analyzer.setup({
             },
             ["cargo"] = {
                 ["loadOutDirsFromCheck"] = true
-            },
-            ["procMacro"] = {
-                ["enable"] = true
             },
             ["diagnostics"] = {
                 ["enableExperimental"] = true

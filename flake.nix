@@ -27,7 +27,7 @@
           homeDirectory = "/home/puh";
           username = "puh";
           stateVersion = "21.11";
-          configuration = { config, pkgs, ... }:
+          configuration = { config, pkgs, nixosConfig, ... }:
             let
               overlay-unstable = final: prev: {
                 unstable = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux;

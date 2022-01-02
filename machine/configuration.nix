@@ -8,6 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # cachix
+      ./cachix.nix
     ];
 
   nixpkgs.config.allowUnfree = true;
@@ -16,6 +18,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
+  boot.kernelPackages = pkgs.linuxPackages_5_15;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -27,8 +30,6 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp3s0.useDHCP = true;
-  networking.interfaces.wlp2s0.useDHCP = true;
   networking.networkmanager.enable = true;
 
 
@@ -43,17 +44,6 @@
   #   keyMap = "us";
   # };
 
-  # Enable the X11 windowing system.
-
-
-
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
   # rtkit is optional but recommended
   security.rtkit.enable = true;
   services.pipewire = {
@@ -97,14 +87,10 @@
       }
     ];
   };
-  # Enable sound.
-
-  # hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.puh = {
     shell = pkgs.zsh;
     isNormalUser = true;
@@ -120,6 +106,8 @@
     pavucontrol
     wget
     dbus
+    killall
+    xsettingsd
   ];
 
   programs.nm-applet.enable = true;
@@ -141,8 +129,10 @@
   virtualisation.docker.enable = true;
 
   services.xserver.enable = true;
-
+  services.xserver.displayManager.startx.enable = true;
+  
   services.xserver.videoDrivers = [ "nvidia" ];
+  
   hardware.nvidia.prime = {
     offload.enable = true;
 
@@ -152,6 +142,7 @@
     # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
     nvidiaBusId = "PCI:1:0:0";
   };
+
 
   hardware.opengl = {
     driSupport32Bit = true;
@@ -173,12 +164,22 @@
             experimental-features = nix-command flakes
             '';
   };
+
+  services.udev.extraRules = ''
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="users", MODE="0660"
+'';
+
+  services.dbus.packages = with pkgs; [ blueman gnome3.dconf ];
+  services.blueman.enable = true;
   
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-wlr ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
     gtkUsePortal = true;
   };
+
+  
+  networking.firewall.checkReversePath = false; # maybe "loose" also works, untested
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

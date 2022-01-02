@@ -184,6 +184,9 @@ in
       dbus
       xdg-desktop-portal-wlr
       xdg-desktop-portal
+      electrum-ltc
+      steam
+      blueman
     ];
   };
 
@@ -234,9 +237,12 @@ in
     enable = false;
   };
 
-  gtk.theme = {
-    package = pkgs.flat-remix-gtk;
-    name = "flat-remix-gtk";
+  gtk = {
+    enable = true;
+    theme = {
+      package = pkgs.flat-remix-gtk;
+      name = "Flat-Remix-GTK-Blue-Dark";
+    };
   };
 
   xsession.pointerCursor = {
@@ -245,6 +251,7 @@ in
   };
 
   services = {
+    blueman-applet.enable = true;
     lorri.enable = true;
     gpg-agent = {
       enable = true;

@@ -13,6 +13,12 @@
 			size = 10000;
 			path = "${config.xdg.dataHome}/zsh/history";
 		};
+    loginExtra = "
+if [[ -z $DISPLAY && $TTY = /dev/tty1 ]]; then
+  export MOZ_ENABLE_WAYLAND=1
+  exec dbus-run-session -- sway
+fi
+";
 		oh-my-zsh = {
 			enable = true;
 			plugins = [ "git" "docker" ];
