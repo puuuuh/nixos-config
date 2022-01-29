@@ -1,5 +1,5 @@
-local compe = require'compe'
 local uv = vim.loop
+local cmp = require("cmp")
 
 local Cargo = {
     count = 0,
@@ -115,8 +115,9 @@ Cargo.load = function(self)
                         self.count = self.count + 1
                         table.insert(current_items, {
                             path = lpath,
-                            word = name .. ' = "' .. res.vers .. '"',
-                            abbr = name,
+                            word = name .. ' = { version = "' .. res.vers .. '" }',
+                            label = name,
+                            kind = cmp.lsp.CompletionItemKind.Module,
                             vers = res.vers,
                         })
                     end
@@ -138,46 +139,27 @@ Cargo.load = function(self)
     -- print(tprint(self.index))
 end
 
---- get_metadata
-Cargo.get_metadata = function(_)
-    return {
-        sort = false,
-        priority = 10000,
-        menu = '[CRG]';
-        dup = 1,
-    }
-end
-
---- determine
-Cargo.determine = function(_, context)
-    if vim.fn.expand('%:t') ~= "Cargo.toml" then
-        return
-    end
-    local res = compe.helper.determine(context, {
-        keyword_pattern = [[^\w*$]],
-    })
-    if res.keyword_pattern_offset ~= 0 then
-       res.trigger_character_offset = #context.before_line
-    end
-    return res
-end
-
 --- complete
-Cargo.complete = function(self, args)
-    local dirname = args.context.before_line
+Cargo.complete = function(self, request, callback)
+    local dirname = request.context.cursor_before_line
     if not dirname or #dirname < 4 then
-        return args.abort()
+        return callback({
+            isIncomplete = true,
+            items = {},
+        })
     end
+
 
     self:_candidates(dirname, function(err, candidates)
         if err then
-            return args.abort()
+            return
         end
         table.sort(candidates, function(item1, item2)
             return self:_compare(item1, item2)
         end)
 
-        args.callback({
+        callback({
+            isIncomplete = true,
             items = candidates,
         })
     end)
@@ -216,6 +198,18 @@ end
 --- _compare
 Cargo._compare = function(self, item1, item2)
     return item1.word < item2.word
+end
+
+function Cargo.get_debug_name()
+   return "crates"
+end
+
+function Cargo:get_keyword_pattern(_)
+   return [[\([^"'\%^<>=~,\s]\)*]]
+end
+
+function Cargo:is_available(_)
+   return vim.fn.expand("%:t") == "Cargo.toml"
 end
 
 return Cargo

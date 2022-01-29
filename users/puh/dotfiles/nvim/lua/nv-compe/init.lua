@@ -1,6 +1,10 @@
 vim.o.completeopt = "menuone,noselect"
 
 local cmp = require'cmp'
+local cargo = require 'nv-compe.cargo'
+cargo:force_update()
+
+cmp.register_source('crates', cargo)
 
 cmp.setup {
     formatting = {
@@ -25,8 +29,8 @@ cmp.setup {
       end,
     },
     sources = {
+        { name = 'crates' },
         { name = 'nvim_lsp' },
-        { name = 'buffer' },
         { name = 'nvim_lua' },
         { name = 'path' },
         { name = 'path_unused' },

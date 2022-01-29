@@ -11,7 +11,6 @@ require'lspconfig'.rust_analyzer.setup({
             client.request = function(method, params, old_handler, bufnr)
                 local handler = old_handler
                 if method == "textDocument/completion" then
-
                     handler = function(err, response, ctx)
                         if not(err or response == nil) then
                             for i, v in pairs(response.items) do
@@ -31,7 +30,7 @@ require'lspconfig'.rust_analyzer.setup({
                                 end
                             end
                         end
-                        old_handler(err, response, ctx)
+                        return old_handler(err, response, ctx)
                     end
 
                 end

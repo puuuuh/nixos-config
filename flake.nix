@@ -9,45 +9,43 @@
     overlay-emacs.url = "github:nix-community/emacs-overlay";
   };
 
+
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, overlay-emacs, home-manager, ... }:
     {
       nixosConfigurations = {
         poplar = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+
           modules = [
             ./machine/configuration.nix
+                home-manager.nixosModules.home-manager 
+                {
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = { inherit inputs; };
+
+                    home-manager.users.puh = import ./users/puh/home.nix;
+                }
           ];
           specialArgs = { inherit inputs; };
         };
-      };
-
-      homeConfigurations = {
-        puh = inputs.home-manager.lib.homeManagerConfiguration {
+        poplar-pc = inputs.nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
-          homeDirectory = "/home/puh";
-          username = "puh";
-          stateVersion = "21.11";
-          configuration = { config, pkgs, nixosConfig, ... }:
-            let
-              overlay-unstable = final: prev: {
-                unstable = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux;
-              };
-            in
-              {
-                nixpkgs.overlays = [ overlay-unstable overlay-emacs.overlay ];
-                nixpkgs.config = {
-                  allowUnfree = true;
-                  allowBroken = true;
-                };
 
-                imports = [
-                  ./users/puh/home.nix
-                ];
-              };
+          modules = [
+            ./machine/pc/configuration.nix
+            home-manager.nixosModules.home-manager 
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
+              home-manager.users.puh = import ./users/puh/home.nix;
+            }
+          ];
+          specialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
         };
       };
-      puh = self.homeConfigurations.puh.activationPackage;
-      defaultPackage.x86_64-linux = self.puh;
+
       devShell = with nixpkgs; nixpkgs.legacyPackages.x86_64-linux.mkShell {
         buildInputs = [ pkgs.rnix-lsp ];
       };

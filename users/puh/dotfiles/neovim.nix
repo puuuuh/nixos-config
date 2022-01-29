@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 
 let
   project-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -21,8 +21,8 @@ in
       vimPlugins.trouble-nvim
       vimPlugins.lspkind-nvim
       vimPlugins.lsp_extensions-nvim
-      vimPlugins.nvim-cmp
-      vimPlugins.cmp-nvim-lsp
+      unstable.vimPlugins.nvim-cmp
+      unstable.vimPlugins.cmp-nvim-lsp
       vimPlugins.vim-vsnip
       vimPlugins.cmp-vsnip
       vimPlugins.cmp-buffer
@@ -42,6 +42,7 @@ in
           tree-sitter-python
           tree-sitter-rust
           tree-sitter-c-sharp
+          tree-sitter-toml
         ]
       ))
       vimPlugins.galaxyline-nvim

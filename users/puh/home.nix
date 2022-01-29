@@ -131,7 +131,6 @@ in
       fira-code-symbols
       mplus-outline-fonts
       (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "SourceCodePro" ]; })
-      emacsPgtkGcc
       spotify
       sshfs
       asciinema
@@ -143,7 +142,6 @@ in
       git-crypt
       git-lfs
       gtop
-      unstable.btop
       bpytop
       tree
       ripgrep
@@ -158,9 +156,7 @@ in
       yarn
       nixpkgs-fmt
       nixpkgs-review
-      pypi2nix
       nodePackages.node2nix
-      unstable.python39Packages.poetry
 
       (python39.withPackages (ps: with ps; [
         pip
@@ -187,6 +183,8 @@ in
       electrum-ltc
       steam
       blueman
+      kubectl
+      kubectx
     ];
   };
 
@@ -212,7 +210,6 @@ in
 
 
   programs = {
-    home-manager.enable = true;
     gpg.enable = true;
     fzf.enable = true;
     jq.enable = true;
@@ -250,6 +247,16 @@ in
     name = "Numix-Cursor";
   };
 
+  gtk.gtk3.extraConfig = {
+    gtk-application-prefer-dark-theme = true;
+    gtk-cursor-theme-name = "Numix-Cursor";
+  };
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      cursor-theme = "Numix-Cursor";
+    };
+  };
+  
   services = {
     blueman-applet.enable = true;
     lorri.enable = true;

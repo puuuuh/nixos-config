@@ -6,7 +6,7 @@
       sway_config = {
         source = ./sway-config;
         target = ".config/sway/myconfig";
-	recursive = true;
+        recursive = true;
       };
     };
   };
