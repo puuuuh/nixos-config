@@ -14,18 +14,10 @@
       let
         overlays = [ fenix.overlay ];
         pkgs = import nixpkgs { inherit system overlays; };
-        stable = fenix.packages.${system}.toolchainOf {
-          channel = "nightly";
-          sha256 = "12c99ccd4b538885505bb48e36bd30351348d5a125c2b1172382a953a8dfebc7";
+        toolchain = fenix.packages.${system}.fromToolchainFile {
+            file = ./rust-toolchain.toml;
+            sha256 = "sha256-D9A5EDbiC6jvAdSgjRVYV7rCXELA1r2VPTRl6978J5w=";
         };
-        toolchain = with fenix.packages.${system};
-          combine [
-            stable.rustc
-            stable.cargo
-            stable.rust-src
-            stable.clippy
-            stable.rustfmt
-          ];
         naersk-lib = pkgs.callPackage naersk {}; 
       in {
         defaultPackage = naersk-lib.buildPackage ./.;

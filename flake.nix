@@ -48,7 +48,7 @@
 
 
       templates.rust = {
-          path = ./flakes/rust;
+          path = ./templates/rust;
           description = "A simple Rust project with fenix";
       };
 
