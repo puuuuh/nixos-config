@@ -46,6 +46,12 @@
         };
       };
 
+
+      templates.rust = {
+          path = ./flakes/rust;
+          description = "A simple Rust project with fenix";
+      };
+
       devShell = with nixpkgs; nixpkgs.legacyPackages.x86_64-linux.mkShell {
         buildInputs = [ pkgs.rnix-lsp ];
       };
