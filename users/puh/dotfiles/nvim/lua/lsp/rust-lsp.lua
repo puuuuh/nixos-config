@@ -60,6 +60,11 @@ require'lspconfig'.rust_analyzer.setup({
             },
             ["inlayHints"] = {
                 ["typeHintsSeparator"] = "‣ "
+            },
+            ["procMacro"] = {
+                ["ignored"] = {
+                    ["async-trait"] = { "async_trait" }
+                }
             }
         }
     },

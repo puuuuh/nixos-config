@@ -27,7 +27,7 @@
         };
 
         devShell = with pkgs; mkShell {
-          buildInputs = [ toolchain rust-analyzer-nightly cmake clang llvmPackages.libclang pkgconfig sqlx-cli protobuf openssl ];
+          buildInputs = [ toolchain rust-analyzer-nightly mold clang ];
         };
 
       });
