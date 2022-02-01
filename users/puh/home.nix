@@ -20,6 +20,49 @@ let
       license = licenses.mit;
     };
   };
+    python-telegram = pkgs.python3Packages.buildPythonApplication rec {
+        pname = "python-telegram";
+        version = "0.14.0";
+
+        src = pkgs.fetchFromGitHub {
+            owner = "alexander-akhmetov";
+            repo = pname;
+            rev = version;
+            sha256 = "sha256-JnClppbOUNGJayCfcPH8TgWOlFBGzz+qsrRtai4gyxg=";
+        };
+
+        propagatedBuildInputs = with pkgs.python3Packages; [
+            pytest
+        ];
+
+        meta = {
+            description = "Telegram console";
+            homepage = "https://github.com/paul-nameless/tg";
+        };
+    };
+    tg = pkgs.python3Packages.buildPythonApplication rec {
+        pname = "tgconsole";
+        version = "0.17.0";
+
+        src = pkgs.fetchFromGitHub {
+            owner = "paul-nameless";
+            repo = "tg";
+            rev = "v${version}";
+            sha256 = "sha256-CzsvMhwGdsYvqLWNFzW6ijopao5m5HgSLQCB9DvYTos=";
+        };
+
+        propagatedBuildInputs = with pkgs.python3Packages; [
+            telegram
+                python-telegram
+        ];
+
+        doCheck = false;
+
+        meta = {
+            description = "Telegram console";
+            homepage = "https://github.com/paul-nameless/tg";
+        };
+    };
   my-firefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
     nixExtensions = [
       (pkgs.fetchFirefoxAddon {
@@ -185,6 +228,7 @@ in
       blueman
       kubectl
       kubectx
+      tg
     ];
   };
 
