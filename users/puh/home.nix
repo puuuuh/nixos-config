@@ -266,6 +266,7 @@ in
       ranger
       urlview
       ffmpeg
+      sccache
     ];
   };
 
