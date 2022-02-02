@@ -27,7 +27,7 @@
         };
 
         devShell = with pkgs; mkShell {
-          buildInputs = [ toolchain rust-analyzer-nightly mold clang sccache ];
+          buildInputs = [ toolchain rust-analyzer-nightly mold clang ];
         };
 
       });
