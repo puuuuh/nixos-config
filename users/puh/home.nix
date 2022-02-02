@@ -22,22 +22,43 @@ let
   };
     python-telegram = pkgs.python3Packages.buildPythonApplication rec {
         pname = "python-telegram";
-        version = "0.14.0";
+        version = "0.15.0";
 
         src = pkgs.fetchFromGitHub {
             owner = "alexander-akhmetov";
             repo = pname;
-            rev = version;
-            sha256 = "sha256-JnClppbOUNGJayCfcPH8TgWOlFBGzz+qsrRtai4gyxg=";
+            rev = "a5c06855aed41ff1503c7949ccb5fe725374fa20";
+            sha256 = "sha256-P4lbCwhkko/xo/s4v60pq8gwAaeY9x/2Q4ij/x8fDwM=";
         };
+
+        nativeBuildInputs = [
+            pkgs.tdlib
+        ];
 
         propagatedBuildInputs = with pkgs.python3Packages; [
             pytest
         ];
 
+        preFixup = let
+            libPath = pkgs.lib.makeLibraryPath [
+                pkgs.zlib
+                pkgs.openssl
+                pkgs.stdenv.cc.cc.lib
+            ];
+        in ''
+            echo "$src"
+            patchelf \
+            --set-rpath "${libPath}" \
+            $out/lib/python3.9/site-packages/telegram/lib/linux/libtdjson.so
+  '';
+
+        postPatch = ''
+            substituteInPlace telegram/tdjson.py \
+            --replace "find_library(\"libtdjson\")" "find_library(\"tdjson\")"
+            '';
+
         meta = {
             description = "Telegram console";
-            homepage = "https://github.com/paul-nameless/tg";
         };
     };
     tg = pkgs.python3Packages.buildPythonApplication rec {
@@ -51,10 +72,23 @@ let
             sha256 = "sha256-CzsvMhwGdsYvqLWNFzW6ijopao5m5HgSLQCB9DvYTos=";
         };
 
-        propagatedBuildInputs = with pkgs.python3Packages; [
-            telegram
-                python-telegram
+        nativeBuildInputs = with pkgs; [
+            ffmpeg
+                ranger
+                fzf
         ];
+
+        propagatedBuildInputs = with pkgs.python3Packages; [
+            python-telegram
+                pkgs.ffmpeg
+        ];
+
+        postPatch = ''
+            substituteInPlace setup.py \
+            --replace "python-telegram==0.14.0" "python-telegram==0.15.0"
+            '';
+
+        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.tdlib ];
 
         doCheck = false;
 
@@ -229,6 +263,9 @@ in
       kubectl
       kubectx
       tg
+      ranger
+      urlview
+      ffmpeg
     ];
   };
 
