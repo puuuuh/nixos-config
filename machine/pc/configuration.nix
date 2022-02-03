@@ -21,6 +21,7 @@
   boot.kernelPackages = pkgs.linuxPackages_5_15;
   boot.initrd.kernelModules = ["amdgpu"];
   boot.supportedFilesystems = [ "ntfs" ];
+  hardware.enableRedistributableFirmware = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -194,7 +195,10 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="use
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.samsung-unified-linux-driver ];
   hardware.sane.enable = true;
-
+  services.logind.extraConfig = ''
+    # make system cat-proof
+    HandlePowerKey=ignore
+  '';
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

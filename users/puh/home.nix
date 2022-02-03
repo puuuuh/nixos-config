@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, unstable, ... }:
 
 let 
   proximity-sort = pkgs.rustPlatform.buildRustPackage rec {
@@ -97,29 +97,29 @@ let
             homepage = "https://github.com/paul-nameless/tg";
         };
     };
-  my-firefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
-    nixExtensions = [
+    my-firefox = pkgs.wrapFirefox unstable.firefox-esr-unwrapped {
+      nixExtensions = [
+          (pkgs.fetchFirefoxAddon {
+           name = "ublock"; # Has to be unique!
+           url = "https://addons.mozilla.org/firefox/downloads/file/3679754/ublock_origin-1.31.0-an+fx.xpi";
+           sha256 = "1h768ljlh3pi23l27qp961v1hd0nbj2vasgy11bmcrlqp40zgvnr";
+           })
       (pkgs.fetchFirefoxAddon {
-        name = "ublock"; # Has to be unique!
-        url = "https://addons.mozilla.org/firefox/downloads/file/3679754/ublock_origin-1.31.0-an+fx.xpi";
-        sha256 = "1h768ljlh3pi23l27qp961v1hd0nbj2vasgy11bmcrlqp40zgvnr";
-      })
+       name = "tridactyl"; # Has to be unique!
+       url = "https://addons.mozilla.org/firefox/downloads/file/3874829/tridactyl-1.22.0-an+fx.xpi";
+       sha256 = "b53098462121e2328c9110ab5dbbff5938d8ecce615aeccfabd16f53dac48d8e";
+       })
       (pkgs.fetchFirefoxAddon {
-        name = "tridactyl"; # Has to be unique!
-        url = "https://addons.mozilla.org/firefox/downloads/file/3874829/tridactyl-1.22.0-an+fx.xpi";
-        sha256 = "b53098462121e2328c9110ab5dbbff5938d8ecce615aeccfabd16f53dac48d8e";
-      })
+       name = "uMatrix"; # Has to be unique!
+       url = "https://addons.mozilla.org/firefox/downloads/file/3812704/umatrix-1.4.4-an+fx.xpi";
+       sha256 = "1de172b1d82de28c334834f7b0eaece0b503f59e62cfc0ccf23222b8f2cb88e5";
+       })
       (pkgs.fetchFirefoxAddon {
-        name = "uMatrix"; # Has to be unique!
-        url = "https://addons.mozilla.org/firefox/downloads/file/3812704/umatrix-1.4.4-an+fx.xpi";
-        sha256 = "1de172b1d82de28c334834f7b0eaece0b503f59e62cfc0ccf23222b8f2cb88e5";
-      })
-      (pkgs.fetchFirefoxAddon {
-        name = "SponsorBlock"; # Has to be unique!
-        url = "https://addons.mozilla.org/firefox/downloads/file/3872957/sponsorblock_skip_sponsorships_on_youtube-3.6.2-an+fx.xpi";
-        sha256 = "48550d1755c952b4fdb43f5e1a6a3eff6e0250939affced2ed4351d9d6a395d3";
-      })
-    ];
+       name = "SponsorBlock"; # Has to be unique!
+       url = "https://addons.mozilla.org/firefox/downloads/file/3872957/sponsorblock_skip_sponsorships_on_youtube-3.6.2-an+fx.xpi";
+       sha256 = "48550d1755c952b4fdb43f5e1a6a3eff6e0250939affced2ed4351d9d6a395d3";
+       })
+      ];
 
     extraPolicies = {
       DisablePocket = true;
@@ -155,6 +155,9 @@ lockPref("media.ffmpeg.vaapi.enabled", true)
 lockPref("media.ffvpx.enabled", false)
 lockPref("media.navigator.mediadatadecoder_vpx_enabled", true)
 lockPref("media.rdd-vpx.enabled", false)
+
+lockPref("layers.acceleration.force-enabled", true)
+lockPref("layers.acceleration.disabled", false)
 '';
     extraPolicies = {
       ExtensionSettings = {
@@ -199,7 +202,7 @@ in
       htop
       discord
       keepassxc
-      tdesktop
+      unstable.tdesktop
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
