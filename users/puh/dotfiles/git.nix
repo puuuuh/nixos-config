@@ -7,6 +7,10 @@
       lfs.enable = true;
       userName = "Puh";
       userEmail = "puhovik@protonmail.com";
+      signing = {
+        signByDefault = true;
+        key = null;
+      };
       ignores = [ "*~" "*.swp" ".direnv" "target" ];
       aliases = {
         unstage = "reset HEAD --";

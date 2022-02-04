@@ -115,6 +115,8 @@
     xsettingsd
   ];
 
+  programs.command-not-found.enable = false;
+
   programs.nm-applet.enable = true;
 
   programs.sway = {
@@ -170,6 +172,8 @@
             experimental-features = nix-command flakes
             '';
   };
+
+  services.udev.packages = [ pkgs.android-udev-rules ];
 
   services.udev.extraRules = ''
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="users", MODE="0660"

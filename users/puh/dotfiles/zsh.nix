@@ -2,8 +2,21 @@
 
 {
   programs = {
+    nix-index = {
+      enable = true;
+      enableBashIntegration = false;
+      enableZshIntegration = true;
+    };
     zsh = {
 		enable = true;
+        enableCompletion = true;
+        enableAutosuggestions = true;
+        enableSyntaxHighlighting = true;
+        shellGlobalAliases = {
+          UUID = "$(uuidgen | tr -d \\n)";
+          G = "| grep";
+          fuck = "sudo !!";
+        };
 		shellAliases = {
 			ll = "ls -l";
             update = "sudo nixos-rebuild switch --flake ~/.config/nixpkgs/#\$(hostname)";

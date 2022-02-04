@@ -164,11 +164,32 @@ lockPref("layers.acceleration.disabled", false)
       };
     };
   };
+  dbus-firefox-esr = (my-firefox.overrideAttrs (_: {
+    desktopItem =
+      pkgs.makeDesktopItem {
+        name = "firefox";
+        icon = "firefox";
+        desktopName = "Firefox (Wayland)";
+        exec = "env MOZ_DBUS_REMOTE=1 MOZ_ENABLE_WAYLAND=1 ${my-firefox}/bin/firefox %u";
+        comment = "";
+        genericName = "Web Browser";
+        categories = "Network;WebBrowser;";
+        mimeType = lib.concatStringsSep ";" [
+          "text/html"
+          "text/xml"
+          "application/xhtml+xml"
+          "application/vnd.mozilla.xul+xml"
+          "x-scheme-handler/http"
+          "x-scheme-handler/https"
+          "x-scheme-handler/ftp"
+        ];
+      };
+    }));
 
   firefox-wayland = pkgs.makeDesktopItem {
-    name = "Firefox (Wayland)";
-    desktopName = "Firefox (Wayland)";
-    exec = "env MOZ_ENABLE_WAYLAND=1 ${my-firefox}/bin/firefox";
+    name = "firefox-xorg";
+    exec = "env MOZ_DBUS_REMOTE=1 firefox %u";
+    desktopName = "Firefox";
     genericName = "Web Browser";
     categories = "Network;WebBrowser;";
     mimeType = lib.concatStringsSep ";" [
@@ -255,7 +276,7 @@ in
       xdg-desktop-portal
       xdg-desktop-portal-wlr
       libnotify
-      my-firefox
+      dbus-firefox-esr
       firefox-wayland
       dbus
       xdg-desktop-portal-wlr
@@ -299,7 +320,6 @@ in
     fzf.enable = true;
     jq.enable = true;
     bat.enable = true;
-    command-not-found.enable = true;
     dircolors.enable = true;
     htop.enable = true;
     info.enable = true;
@@ -325,6 +345,19 @@ in
       package = pkgs.flat-remix-gtk;
       name = "Flat-Remix-GTK-Blue-Dark";
     };
+  };
+
+  xdg.mimeApps.enable = true;
+  xdg.mimeApps.defaultApplications = 
+  {
+    # Add other defaults here too
+    "text/html" = [ "firefox-wayland.desktop" ];
+    "text/xml" = [ "firefox.desktop" ];
+    "application/xhtml+xml" = [ "firefox.desktop" ];
+    "application/vnd.mozilla.xul+xml" = [ "firefox.desktop" ];
+    "x-scheme-handler/http" = [ "firefox.desktop" ];
+    "x-scheme-handler/https" = [ "firefox.desktop" ];
+    "x-scheme-handler/ftp" = [ "firefox.desktop" ];
   };
 
   xsession.pointerCursor = {
