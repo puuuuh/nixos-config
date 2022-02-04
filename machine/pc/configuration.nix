@@ -33,7 +33,12 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.networkmanager.enable = true;
+
+  networking.networkmanager = {
+    enable = true;
+    dns = "dnsmasq";
+  };
+
   networking.hostName = "poplar-pc";
   
   virtualisation.virtualbox.host.enable = true;
