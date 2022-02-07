@@ -16,18 +16,14 @@ if not vim.g.vscode then
     require('lsp.react')
     require('lsp.lua-lsp')
     require('lsp.csharp')
+    require('lsp.nix')
 
     -- dap
-    -- require('nv-dap')
-    -- require('nv-dap.ui')
-    -- require('nv-dap.rust')
     require('vimspector')
-
 
     require('nv-compe')
     require('nv-lsptrouble')
     require('fzf')
-
 
     require('uml')
 

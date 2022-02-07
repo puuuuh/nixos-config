@@ -7,13 +7,22 @@
     home-manager.url = "github:nix-community/home-manager/release-21.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     overlay-emacs.url = "github:nix-community/emacs-overlay";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, overlay-emacs, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, overlay-emacs, home-manager, flake-utils, ... }:
+  let shared = flake-utils.lib.eachDefaultSystem (system:
+  let pkgs = nixpkgs.legacyPackages.${system}; in
+  rec {
+    devShell = pkgs.mkShell {
+      buildInputs = with pkgs; [ rnix-lsp sumneko-lua-language-server ];
+    };
+  });
+  in
   {
     nixosConfigurations = {
-      poplar = inputs.nixpkgs.lib.nixosSystem {
+      poplar = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
 
         modules = [
@@ -22,12 +31,11 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-
+            home-manager.extraSpecialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
             home-manager.users.puh = import ./users/puh/home.nix;
           }
         ];
-        specialArgs = { inherit inputs; };
+        specialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
       };
       poplar-pc = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -46,14 +54,11 @@
       };
     };
 
-
     templates.rust = {
       path = ./templates/rust;
       description = "A simple Rust project with fenix";
     };
 
-    devShell = with nixpkgs; nixpkgs.legacyPackages.x86_64-linux.mkShell {
-      buildInputs = [ pkgs.rnix-lsp ];
-    };
+    devShell = shared.devShell;
   };
 }

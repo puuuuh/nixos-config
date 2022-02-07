@@ -148,16 +148,6 @@ let
 
     // Disable language pack signing
     lockPref("extensions.langpacks.signatures.required", false)
-
-    // vaapi
-
-    lockPref("media.ffmpeg.vaapi.enabled", true)
-    lockPref("media.ffvpx.enabled", false)
-    lockPref("media.navigator.mediadatadecoder_vpx_enabled", true)
-    lockPref("media.rdd-vpx.enabled", false)
-
-    lockPref("layers.acceleration.force-enabled", true)
-    lockPref("layers.acceleration.disabled", false)
     '';
     extraPolicies = {
       ExtensionSettings = {

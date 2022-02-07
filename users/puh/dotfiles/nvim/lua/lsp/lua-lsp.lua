@@ -10,11 +10,10 @@ else
 end
 
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
-local sumneko_root_path = "/usr/share/lua-language-server"
-local sumneko_binary = "/usr/bin/lua-language-server"
+local sumneko_binary = "lua-language-server"
 
 require'lspconfig'.sumneko_lua.setup {
-  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+  cmd = {sumneko_binary};
   settings = {
     Lua = {
       runtime = {

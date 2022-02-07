@@ -1,17 +1,5 @@
 require('nvim-autopairs').setup()
 
-local pairs_map = {
-    ["'"] = "'",
-    ['"'] = '"',
-    ['('] = ')',
-    ['['] = ']',
-    ['{'] = '}',
-    ['`'] = '`',
-}
-local disable_filetype = { "TelescopePrompt" }
-local break_line_filetype = nil -- mean all file type
-
-
 local remap = vim.api.nvim_set_keymap
 local npairs = require('nvim-autopairs')
 
