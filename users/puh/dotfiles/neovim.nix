@@ -58,6 +58,9 @@ in
       vimPlugins.neogit
       vimPlugins.indent-blankline-nvim
       vimPlugins.vim-easymotion
+      vimPlugins.vim-nix
+      vimPlugins.vim-toml
+      vimPlugins.vim-yaml
     ];
     extraConfig = ''
       :lua require('init_lua')

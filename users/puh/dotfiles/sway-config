@@ -25,7 +25,9 @@ font pango:monospace 8
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 
-output HDMI-A-1 scale 1.5
+output DP-3 scale 1.5
+output DP-3 position 0 0
+output HDMI-A-1 transform 270
 
 # Use pactl to adjust volume in PulseAudio.
 bindsym --to-code XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
@@ -166,7 +168,6 @@ mode "resize" {
         bindsym --to-code k resize grow height 10 px or 10 ppt
         bindsym --to-code l resize shrink height 10 px or 10 ppt
         bindsym --to-code semicolon resize grow width 10 px or 10 ppt
-
         # same bindings, but for the arrow keys
         bindsym --to-code Left resize shrink width 10 px or 10 ppt
         bindsym --to-code Down resize grow height 10 px or 10 ppt
@@ -202,6 +203,11 @@ input type:keyboard {
     xkb_layout us,ru
     xkb_options grp:caps_toggle
 }
+
+workspace doom output DP-3
+
+assign [app_id="configs"] workspace configs
+
 
 include /etc/sway/config.d/*
 

@@ -7,19 +7,19 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+    ./hardware-configuration.nix
       # cachix
       ../cachix.nix
     ];
 
-  nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
-  boot.kernelPackages = pkgs.linuxPackages_5_15;
-  boot.initrd.kernelModules = ["amdgpu"];
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
+  boot.initrd.kernelModules = ["amdgpu" ];
   boot.supportedFilesystems = [ "ntfs" ];
   hardware.enableRedistributableFirmware = true;
 
@@ -40,7 +40,7 @@
   };
 
   networking.hostName = "poplar-pc";
-  
+
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
 
@@ -103,8 +103,7 @@
   users.users.puh = {
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups = [ "scanner" "lp" "wheel" "networkmanager" "docker" "user-with-access-to-virtualbox" "vboxusers" ];
-
+    extraGroups = [ "scanner" "lp" "wheel" "networkmanager" "docker" "user-with-access-to-virtualbox" "vboxusers" "wireshark" ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -156,16 +155,16 @@
 
   services.xserver.enable = true;
   services.xserver.displayManager.startx.enable = true;
-  
+
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   hardware.opengl = {
     driSupport32Bit = true;
     driSupport = true;
     extraPackages = with pkgs; [
-	rocm-opencl-icd
-	rocm-opencl-runtime
-	amdvlk
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      amdvlk
     ];
   };
 
@@ -174,26 +173,26 @@
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = ''
-            experimental-features = nix-command flakes
-            '';
+    experimental-features = nix-command flakes
+    '';
   };
 
   services.udev.packages = [ pkgs.android-udev-rules ];
 
   services.udev.extraRules = ''
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="users", MODE="0660"
-'';
+  SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="users", MODE="0660"
+  '';
 
   services.dbus.packages = with pkgs; [ blueman gnome3.dconf ];
   services.blueman.enable = true;
-  
+
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
     gtkUsePortal = true;
   };
 
-  
+
   networking.firewall.checkReversePath = false; # maybe "loose" also works, untested
 
   powerManagement = {
@@ -207,7 +206,7 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="use
   services.logind.extraConfig = ''
     # make system cat-proof
     HandlePowerKey=ignore
-  '';
+    '';
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

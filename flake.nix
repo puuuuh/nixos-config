@@ -11,49 +11,49 @@
 
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, overlay-emacs, home-manager, ... }:
-    {
-      nixosConfigurations = {
-        poplar = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+  {
+    nixosConfigurations = {
+      poplar = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
 
-          modules = [
-            ./machine/configuration.nix
-                home-manager.nixosModules.home-manager 
-                {
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = { inherit inputs; };
+        modules = [
+          ./machine/configuration.nix
+          home-manager.nixosModules.home-manager 
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
 
-                    home-manager.users.puh = import ./users/puh/home.nix;
-                }
-          ];
-          specialArgs = { inherit inputs; };
-        };
-        poplar-pc = inputs.nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-
-          modules = [
-            ./machine/pc/configuration.nix
-            home-manager.nixosModules.home-manager 
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
-              home-manager.users.puh = import ./users/puh/home.nix;
-            }
-          ];
-          specialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
-        };
+            home-manager.users.puh = import ./users/puh/home.nix;
+          }
+        ];
+        specialArgs = { inherit inputs; };
       };
+      poplar-pc = inputs.nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
 
-
-      templates.rust = {
-          path = ./templates/rust;
-          description = "A simple Rust project with fenix";
-      };
-
-      devShell = with nixpkgs; nixpkgs.legacyPackages.x86_64-linux.mkShell {
-        buildInputs = [ pkgs.rnix-lsp ];
+        modules = [
+          ./machine/pc/configuration.nix
+          home-manager.nixosModules.home-manager 
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
+            home-manager.users.puh = import ./users/puh/home.nix;
+          }
+        ];
+        specialArgs = { unstable = nixpkgs-unstable.legacyPackages.${system}; };
       };
     };
+
+
+    templates.rust = {
+      path = ./templates/rust;
+      description = "A simple Rust project with fenix";
+    };
+
+    devShell = with nixpkgs; nixpkgs.legacyPackages.x86_64-linux.mkShell {
+      buildInputs = [ pkgs.rnix-lsp ];
+    };
+  };
 }
