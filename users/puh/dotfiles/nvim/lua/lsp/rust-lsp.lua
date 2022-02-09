@@ -99,4 +99,4 @@ function OpenCargo()
     )
 end
 vim.cmd('autocmd BufWritePost Cargo.toml lua RustReloadWorkspace()')
--- vim.cmd('autocmd BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require\'lsp_extensions\'.inlay_hints{ aligned = true, prefix = " > ", highlight = "InlayHint", enabled = {"TypeHint", "ChainingHint"}}')
+vim.cmd('autocmd BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require\'lsp_extensions\'.inlay_hints{ prefix = " > ", highlight = "InlayHint", enabled = {"TypeHint", "ParameterHint"}}')

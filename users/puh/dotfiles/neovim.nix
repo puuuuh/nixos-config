@@ -10,12 +10,23 @@ let
       sha256 = "0jxxckfcm0vmcblj6fr4fbdxw7b5dwpr8b7jv59mjsyzqfcdnhs5";
     };
   };
+  rust-vim = pkgs.vimUtils.buildVimPlugin {
+    name = "rust-vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "puuuuh";
+      repo = "rust.vim";
+      rev = "741848b96d0528bf24a543ed496df1aab5ce82f7";
+      sha256 = "sha256-XY2KmjEXmRT1qddHWs47AQC+GNCHjKEStdUeJwqCfxI=";
+    };
+  };
 in
 {
   programs.neovim = {
     enable = true;
+    package = unstable.neovim-unwrapped;
     vimAlias = true;
-    plugins = with pkgs; [
+    plugins = with unstable; [
+      rust-vim
       vimPlugins.nvim-lspconfig
       vimPlugins.lsp-status-nvim
       vimPlugins.trouble-nvim
@@ -30,7 +41,6 @@ in
       vimPlugins.fzf-vim
       vimPlugins.tokyonight-nvim
       vimPlugins.vim-rooter
-      vimPlugins.rust-vim
       vimPlugins.vimspector
       vimPlugins.vim-javascript
       vimPlugins.typescript-vim
@@ -50,11 +60,12 @@ in
       vimPlugins.i3config-vim
       vimPlugins.plantuml-syntax
       vimPlugins.vim-go
-      vimPlugins.plenary-nvim
       vimPlugins.telescope-nvim
       vimPlugins.popup-nvim
       vimPlugins.nvim-tree-lua
+      vimPlugins.plenary-nvim
       project-nvim
+
       vimPlugins.neogit
       vimPlugins.indent-blankline-nvim
       vimPlugins.vim-easymotion
