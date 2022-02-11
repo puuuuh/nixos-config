@@ -204,11 +204,6 @@ input type:keyboard {
     xkb_options grp:caps_toggle
 }
 
-workspace doom output DP-3
-
-assign [app_id="configs"] workspace configs
-
-
 include /etc/sway/config.d/*
 
 exec --no-startup-id waybar
