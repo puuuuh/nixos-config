@@ -52,7 +52,6 @@ in
           tree-sitter-python
           tree-sitter-rust
           tree-sitter-c-sharp
-          tree-sitter-toml
         ]
       ))
       vimPlugins.galaxyline-nvim
@@ -70,7 +69,6 @@ in
       vimPlugins.indent-blankline-nvim
       vimPlugins.vim-easymotion
       vimPlugins.vim-nix
-      vimPlugins.vim-toml
       vimPlugins.vim-yaml
     ];
     extraConfig = ''

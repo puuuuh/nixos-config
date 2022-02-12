@@ -142,6 +142,7 @@ end
 --- complete
 Cargo.complete = function(self, request, callback)
     local dirname = request.context.cursor_before_line
+
     if not dirname or #dirname < 4 then
         return callback({
             isIncomplete = true,
@@ -149,6 +150,9 @@ Cargo.complete = function(self, request, callback)
         })
     end
 
+    if string.match(dirname, "^[%w_-]+$") == nil then
+        return
+    end
 
     self:_candidates(dirname, function(err, candidates)
         if err then
