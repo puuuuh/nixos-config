@@ -204,9 +204,12 @@ input type:keyboard {
     xkb_options grp:caps_toggle
 }
 
+bar {
+     swaybar_command waybar
+}
+
 include /etc/sway/config.d/*
 
-exec --no-startup-id waybar
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id mako

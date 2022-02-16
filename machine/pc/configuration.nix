@@ -19,8 +19,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
-  boot.initrd.kernelModules = ["amdgpu" ];
+  boot.initrd.kernelModules = ["amdgpu" "zenpower" "nct6775" ];
   boot.supportedFilesystems = [ "ntfs" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ zenpower ];
+  boot.blacklistedKernelModules = ["k10temp"];
   hardware.enableRedistributableFirmware = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
