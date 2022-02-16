@@ -31,7 +31,7 @@ if not vim.g.vscode then
     require('lsp_status')
 
     -- status bar
-    require('galaxyline.my')
+    require('nv-galaxyline.my')
 
     -- lang-specific
     require('langs.rust')

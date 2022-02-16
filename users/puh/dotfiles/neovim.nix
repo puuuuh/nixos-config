@@ -32,8 +32,8 @@ in
       vimPlugins.trouble-nvim
       vimPlugins.lspkind-nvim
       vimPlugins.lsp_extensions-nvim
-      unstable.vimPlugins.nvim-cmp
-      unstable.vimPlugins.cmp-nvim-lsp
+      vimPlugins.nvim-cmp
+      vimPlugins.cmp-nvim-lsp
       vimPlugins.vim-vsnip
       vimPlugins.cmp-vsnip
       vimPlugins.cmp-buffer
